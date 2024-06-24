@@ -1,5 +1,6 @@
 package dev.otthon.jobbank.api.jobs.mappers;
 
+import dev.otthon.jobbank.api.jobs.dtos.JobRequestDTO;
 import dev.otthon.jobbank.api.jobs.dtos.JobResponseDTO;
 import dev.otthon.jobbank.core.models.Job;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class ModelMapperJobMapper implements JobMapper{
     }
 
     @Override
-    public Job toJob(JobResponseDTO jobResponseDTO) {
-        return modelMapper.map(jobResponseDTO, Job.class);
+    public Job toJob(JobRequestDTO jobRequestDTO) {
+        return modelMapper.map(jobRequestDTO, Job.class);
     }
 }
