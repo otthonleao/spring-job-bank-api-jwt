@@ -36,7 +36,7 @@ public class SkillAssembler implements SimpleRepresentationModelAssembler<SkillR
     // Para adicionar os links na API Heteoas para um conjunto de recursos
     @Override
     public void addLinks(CollectionModel<EntityModel<SkillResponseDTO>> resources) {
-        var selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SkillRestController.class).findAll())
+        var selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SkillRestController.class).findAll(null))
                 .withSelfRel()
                 .withType("GET");
 
