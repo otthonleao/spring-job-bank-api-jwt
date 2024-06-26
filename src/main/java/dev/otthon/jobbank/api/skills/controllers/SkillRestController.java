@@ -9,6 +9,8 @@ import dev.otthon.jobbank.core.repositories.SkillRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -23,15 +25,14 @@ public class SkillRestController {
     private final SkillMapper skillMapper;
     private final SkillRepository skillRepository;
     private final SkillAssembler skillAssembler;
+    private final PagedResourcesAssembler<SkillResponseDTO> pagedResourcesAssembler;
 
     @GetMapping
-    public CollectionModel<EntityModel<SkillResponseDTO>> findAll() {
-        var skills =  skillRepository.findAll()
-                .stream()
-                .map(skillMapper::toSkillResponseDTO)
-                .toList();
-        // Montando o HATEOAS
-        return skillAssembler.toCollectionModel(skills);
+    public CollectionModel<EntityModel<SkillResponseDTO>> findAll(Pageable pageable) {
+        var skills = skillRepository.findAll(pageable)
+                .map(skillMapper::toSkillResponseDTO);
+
+        return pagedResourcesAssembler.toModel(skills, skillAssembler);
     }
 
     @GetMapping("/{id}")
