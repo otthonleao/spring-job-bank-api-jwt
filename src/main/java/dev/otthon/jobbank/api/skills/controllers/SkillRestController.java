@@ -15,6 +15,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -45,6 +46,7 @@ public class SkillRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('COMPANY')")
     @ResponseStatus(code = HttpStatus.CREATED)
     public EntityModel<SkillResponseDTO> create(@RequestBody @Valid SkillRequestDTO skillRequestDTO) {
         var skill = skillMapper.toSkill(skillRequestDTO);
@@ -55,6 +57,7 @@ public class SkillRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('COMPANY')")
     public EntityModel<SkillResponseDTO> update(@PathVariable Long id, @Valid @RequestBody SkillRequestDTO skillRequestDTO) {
         var skill = skillRepository.findById(id)
                 .orElseThrow(SkillNotFoundException::new);
@@ -65,6 +68,7 @@ public class SkillRestController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('COMPANY')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         var skill = skillRepository.findById(id)
                 .orElseThrow(SkillNotFoundException::new);

@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,6 +43,7 @@ public class JobRestController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('COMPANY')")
     @ResponseStatus(code = HttpStatus.CREATED)
     public JobResponseDTO create(@RequestBody @Valid JobRequestDTO jobRequestDTO) {
         var job = jobMapper.toJob(jobRequestDTO);
@@ -50,6 +52,7 @@ public class JobRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('COMPANY')")
     public JobResponseDTO update(@PathVariable Long id, @RequestBody @Valid JobRequestDTO jobRequestDTO) {
         var job = jobRepository.findById(id).orElseThrow(JobNotFoundException::new);
 
@@ -61,6 +64,7 @@ public class JobRestController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('COMPANY')")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         var job = jobRepository.findById(id)
                 .orElseThrow(JobNotFoundException::new);
